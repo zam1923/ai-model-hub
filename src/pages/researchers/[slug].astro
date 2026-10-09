@@ -18,56 +18,75 @@ const lab = allLabs.find(l => l.data.name === researcher.data.lab);
 ---
 
 <Layout title={`${researcher.data.name} | AI Info Catalog`}>
-  <div class="max-w-3xl mx-auto">
-    <div class="mb-6">
-      <a href="/researchers" class="text-blue-500 hover:underline">&larr; 研究者一覧に戻る</a>
-    </div>
+  <!-- Hero Section -->
+  <div class="bg-slate-900 text-white pt-12 pb-24 lg:pt-16 lg:pb-32">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <a href="/researchers" class="inline-flex items-center text-sm font-bold tracking-wider uppercase text-blue-400 hover:text-blue-300 transition-colors mb-12">
+        &larr; Back to Researchers
+      </a>
 
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
-      <div class="flex flex-col md:flex-row gap-8 items-start mb-8">
-        <div class="w-24 h-24 md:w-32 md:h-32 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-4xl md:text-5xl font-bold text-gray-500 dark:text-gray-400 shrink-0">
-          {researcher.data.name.charAt(0)}
+      <div class="flex flex-col md:flex-row gap-10 items-center md:items-start">
+        <div class="w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden shrink-0 shadow-2xl ring-8 ring-white/10">
+          {researcher.data.image ? (
+            <img src={researcher.data.image} alt={researcher.data.name} class="w-full h-full object-cover" />
+          ) : (
+            <div class="w-full h-full bg-slate-800 flex items-center justify-center text-6xl font-black text-slate-500">
+              {researcher.data.name.charAt(0)}
+            </div>
+          )}
         </div>
-        <div>
-          <h1 class="text-4xl font-bold mb-2">{researcher.data.name}</h1>
-          <p class="text-xl text-gray-600 dark:text-gray-300 mb-4">{researcher.data.role}</p>
 
-          <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium mb-4">
-            <span class="mr-2">所属:</span>
+        <div class="text-center md:text-left flex-1 mt-4 md:mt-8">
+          <h1 class="text-5xl md:text-6xl font-black tracking-tight mb-4">{researcher.data.name}</h1>
+          <p class="text-2xl text-blue-400 font-medium mb-6">{researcher.data.role}</p>
+
+          <div class="flex items-center justify-center md:justify-start gap-4 flex-wrap">
+            <span class="text-slate-400 uppercase tracking-wider text-sm font-bold">Affiliation:</span>
             {lab ? (
-              <a href={`/labs/${lab.id}`} class="hover:underline">{researcher.data.lab}</a>
+              <a href={`/labs/${lab.id}`} class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors rounded-lg font-bold">
+                {researcher.data.lab}
+              </a>
             ) : (
-              <span>{researcher.data.lab}</span>
+              <span class="px-4 py-2 bg-white/10 rounded-lg font-bold">{researcher.data.lab}</span>
             )}
-          </div>
-
-          <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg text-sm text-gray-700 dark:text-gray-300">
-            <strong>主な実績:</strong> {researcher.data.famousFor}
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 -mt-12 relative z-10">
+    <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-100">
+
+      <div class="mb-12 p-6 bg-blue-50 border border-blue-100 rounded-2xl">
+        <h3 class="text-sm font-black uppercase tracking-widest text-blue-600 mb-2">Known For</h3>
+        <p class="text-lg text-slate-800 font-medium leading-relaxed">{researcher.data.famousFor}</p>
+      </div>
+
+      <div class="prose prose-lg prose-slate max-w-none mb-12">
         <Content />
       </div>
 
       {researcher.data.links && Object.keys(researcher.data.links).length > 0 && (
-        <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
-          <h3 class="text-lg font-semibold mb-4">関連リンク</h3>
+        <div class="pt-10 border-t border-slate-200">
+          <h3 class="text-lg font-black uppercase tracking-wider text-slate-900 mb-6">Connect & Discover</h3>
           <div class="flex flex-wrap gap-4">
             {researcher.data.links.x && (
-              <a href={researcher.data.links.x} target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
-                X (Twitter)
-              </a>
-            )}
-            {researcher.data.links.github && (
-              <a href={researcher.data.links.github} target="_blank" rel="noopener noreferrer" class="text-gray-800 dark:text-gray-200 hover:underline">
-                GitHub
+              <a href={researcher.data.links.x} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13.6823 10.6218L20.2391 3H18.6854L12.9921 9.61788L8.44486 3H3.2002L10.0765 13.0074L3.2002 21H4.75404L10.7663 14.0113L15.5685 21H20.8131L13.6819 10.6218H13.6823ZM11.5541 13.0956L10.8574 12.0991L5.31391 4.16971H7.70053L12.1742 10.5689L12.8709 11.5655L18.6861 19.8835H16.2995L11.5541 13.096V13.0956Z"/></svg>
+                Twitter / X
               </a>
             )}
             {researcher.data.links.scholar && (
-              <a href={researcher.data.links.scholar} target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">
+              <a href={researcher.data.links.scholar} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-2a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0-12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
                 Google Scholar
+              </a>
+            )}
+            {researcher.data.links.github && (
+              <a href={researcher.data.links.github} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-xl transition-colors border border-slate-200">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" /></svg>
+                GitHub
               </a>
             )}
           </div>

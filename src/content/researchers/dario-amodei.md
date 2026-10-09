@@ -3,6 +3,7 @@ name: "Dario Amodei"
 lab: "Anthropic"
 role: "CEO & Co-founder"
 famousFor: "Anthropicの共同創設者。元OpenAIの研究担当VPであり、AIの安全性研究に貢献。"
+image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop"
 links:
   scholar: "https://scholar.google.com/citations?user=dario-amodei-id-placeholder"
 ---

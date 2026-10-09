@@ -6,24 +6,32 @@ const researchers = await getCollection('researchers');
 ---
 
 <Layout title="研究者一覧 | AI Info Catalog">
-  <div class="mb-8">
-    <h1 class="text-3xl md:text-4xl font-bold mb-4">注目研究者</h1>
-    <p class="text-gray-600 dark:text-gray-300">AI技術の最前線で活躍するトップ研究者やエンジニアの一覧です。</p>
+  <div class="bg-slate-900 text-white py-16 mb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl md:text-5xl font-black mb-4">Key Researchers</h1>
+      <p class="text-slate-400 text-lg max-w-2xl">AI技術の最前線で活躍するトップ研究者やエンジニアの一覧です。</p>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {researchers.map(researcher => (
-      <a href={`/researchers/${researcher.id}`} class="flex items-start p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
-        <div class="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500 dark:text-gray-400 mr-5 shrink-0 mt-1">
-          {researcher.data.name.charAt(0)}
-        </div>
-        <div>
-          <h2 class="text-xl font-semibold mb-1">{researcher.data.name}</h2>
-          <p class="text-sm font-medium text-blue-600 dark:text-blue-400 mb-2">{researcher.data.lab}</p>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{researcher.data.role}</p>
-          <p class="text-xs text-gray-500 dark:text-gray-500 line-clamp-2">{researcher.data.famousFor}</p>
-        </div>
-      </a>
-    ))}
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {researchers.map(researcher => (
+        <a href={`/researchers/${researcher.id}`} class="group flex flex-col items-center text-center p-8 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
+          <div class="w-32 h-32 rounded-full overflow-hidden mb-5 shadow-inner ring-4 ring-slate-50 group-hover:ring-blue-50 transition-all">
+            {researcher.data.image ? (
+              <img src={researcher.data.image} alt={researcher.data.name} class="w-full h-full object-cover" />
+            ) : (
+              <div class="w-full h-full bg-slate-200 flex items-center justify-center text-4xl font-black text-slate-400">
+                {researcher.data.name.charAt(0)}
+              </div>
+            )}
+          </div>
+          <h2 class="text-xl font-black text-slate-900 group-hover:text-blue-600 transition-colors mb-1">{researcher.data.name}</h2>
+          <p class="text-sm font-bold text-blue-600 tracking-wide uppercase mb-1">{researcher.data.lab}</p>
+          <p class="text-sm text-slate-500 mb-4">{researcher.data.role}</p>
+          <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed px-2">{researcher.data.famousFor}</p>
+        </a>
+      ))}
+    </div>
   </div>
 </Layout>
