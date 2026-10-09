@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const labs = await getCollection('labs');
+  return labs.map(lab => ({
+    params: { slug: lab.id },
+    props: { lab },
+  }));
+}
+
+const { lab } = Astro.props;
+const { Content } = await render(lab);
+
+// Get models associated with this lab
+const allModels = await getCollection('models');
+const labModels = allModels.filter(model => model.data.lab === lab.data.name)
+  .sort((a, b) => b.data.releaseDate.valueOf() - a.data.releaseDate.valueOf());
+
+// Get researchers associated with this lab
+const allResearchers = await getCollection('researchers');
+const labResearchers = allResearchers.filter(researcher => researcher.data.lab === lab.data.name);
+---
+
+<Layout title={`${lab.data.name} | AI Info Catalog`}>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+      <a href="/labs" class="text-blue-500 hover:underline">&larr; ラボ一覧に戻る</a>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12 mb-8">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">{lab.data.name}</h1>
+      <p class="text-gray-500 dark:text-gray-400 mb-8">{lab.data.location}</p>
+
+      <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
+        <Content />
+      </div>
+
+      {lab.data.website && (
+        <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+          <a href={lab.data.website} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+            公式サイトへ
+          </a>
+        </div>
+      )}
+    </div>
+
+    {labModels.length > 0 && (
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">代表モデル</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {labModels.map(model => (
+            <a href={`/models/${model.id}`} class="block p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
+              <h3 class="text-xl font-semibold mb-2">{model.data.title}</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">{model.data.releaseDate.toISOString().split('T')[0]}</p>
+              <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">{model.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {labResearchers.length > 0 && (
+      <div>
+        <h2 class="text-2xl font-bold mb-6">所属する主な研究者・メンバー</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {labResearchers.map(researcher => (
+            <a href={`/researchers/${researcher.id}`} class="flex items-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
+              <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xl font-bold text-gray-500 dark:text-gray-400 mr-4 shrink-0">
+                {researcher.data.name.charAt(0)}
+              </div>
+              <div>
+                <h3 class="font-semibold">{researcher.data.name}</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{researcher.data.role}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</Layout>

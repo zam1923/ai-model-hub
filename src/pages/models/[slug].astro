@@ -1,0 +1,62 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const models = await getCollection('models');
+  return models.map(model => ({
+    params: { slug: model.id },
+    props: { model },
+  }));
+}
+
+const { model } = Astro.props;
+const { Content } = await render(model);
+---
+
+<Layout title={`${model.data.title} | AI Info Catalog`}>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+      <a href="/models" class="text-blue-500 hover:underline">&larr; モデル一覧に戻る</a>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12 mb-8">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">{model.data.title}</h1>
+
+      <div class="flex flex-wrap gap-3 mb-8 pb-8 border-b border-gray-200 dark:border-gray-700">
+        <div class="px-3 py-1.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-md">開発元: {model.data.lab}</div>
+        <div class="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm font-medium rounded-md">リリース: {model.data.releaseDate.toISOString().split('T')[0]}</div>
+        <div class="px-3 py-1.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm font-medium rounded-md">ライセンス: {model.data.license}</div>
+        <div class="px-3 py-1.5 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm font-medium rounded-md">コンテキスト長: {model.data.contextWindow}</div>
+      </div>
+
+      <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
+        <Content />
+      </div>
+
+      {model.data.modalities && (
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold mb-3">対応モダリティ</h3>
+          <div class="flex gap-2">
+            {model.data.modalities.map(mod => (
+              <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm font-bold rounded-full">{mod}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div class="flex flex-wrap gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+        {model.data.officialUrl && (
+          <a href={model.data.officialUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+            公式サイト
+          </a>
+        )}
+        {model.data.paperUrl && (
+          <a href={model.data.paperUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors">
+            論文リンク
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</Layout>
