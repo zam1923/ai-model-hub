@@ -1,0 +1,28 @@
+
+> callous-cycle@0.0.1 dev
+> astro dev
+
+02:16:10 [vite] connected.
+02:16:10 [types] Generated 1ms
+02:16:11 [vite] connected.
+02:16:11 [content] Syncing content
+02:16:11 [content] Synced content
+02:16:11 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v7.3.8 ready in 1821 ms
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+02:16:11 watching for file changes...
+02:18:44 [200] / 262ms
+02:18:45 [200] / 6ms
+02:18:45 [200] /models 22ms
+02:19:38 [200] / 5ms
+02:19:38 [200] /models 6ms
+02:19:39 [200] /models/gpt-4o 66ms
+02:19:39 [200] /labs 30ms
+02:20:48 [200] / 9ms
+02:20:49 [200] /models 5ms
+02:20:49 [200] /models/gpt-4o 4ms
+02:20:49 [200] /labs 4ms
+02:20:50 [200] /labs/openai 27ms
+02:20:50 [200] /researchers 20ms
+02:20:50 [200] /researchers/sam-altman 25ms

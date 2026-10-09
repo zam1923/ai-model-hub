@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const researchers = await getCollection('researchers');
+---
+
+<Layout title="研究者一覧 | AI Info Catalog">
+  <div class="mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold mb-4">注目研究者</h1>
+    <p class="text-gray-600 dark:text-gray-300">AI技術の最前線で活躍するトップ研究者やエンジニアの一覧です。</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {researchers.map(researcher => (
+      <a href={`/researchers/${researcher.id}`} class="flex items-start p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
+        <div class="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-2xl font-bold text-gray-500 dark:text-gray-400 mr-5 shrink-0 mt-1">
+          {researcher.data.name.charAt(0)}
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold mb-1">{researcher.data.name}</h2>
+          <p class="text-sm font-medium text-blue-600 dark:text-blue-400 mb-2">{researcher.data.lab}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{researcher.data.role}</p>
+          <p class="text-xs text-gray-500 dark:text-gray-500 line-clamp-2">{researcher.data.famousFor}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</Layout>

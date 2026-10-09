@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="ja" class="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
+		<header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+			<div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+				<a href="/" class="text-xl font-bold tracking-tight text-blue-600 dark:text-blue-400">AI Info Catalog</a>
+				<nav>
+					<ul class="flex space-x-6">
+						<li><a href="/models" class="hover:text-blue-500 transition-colors">Models</a></li>
+						<li><a href="/labs" class="hover:text-blue-500 transition-colors">Labs</a></li>
+						<li><a href="/researchers" class="hover:text-blue-500 transition-colors">Researchers</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+
+		<main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
+			<slot />
+		</main>
+
+		<footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8 mt-auto">
+			<div class="max-w-6xl mx-auto px-4 text-center text-sm text-gray-500 dark:text-gray-400">
+				&copy; {new Date().getFullYear()} AI Info Catalog. All rights reserved.
+			</div>
+		</footer>
+	</body>
+</html>

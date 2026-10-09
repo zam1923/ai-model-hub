@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const models = await getCollection('models');
+const labs = await getCollection('labs');
+const researchers = await getCollection('researchers');
+
+// Sort models by release date descending
+const latestModels = models
+  .sort((a, b) => b.data.releaseDate.valueOf() - a.data.releaseDate.valueOf())
+  .slice(0, 3);
+---
+
+<Layout title="AI Info Catalog | トップページ">
+  <!-- Hero Section -->
+  <section class="py-12 md:py-20 text-center">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
+      最先端AIの情報を網羅
+    </h1>
+    <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+      日本人向けに整理された、AIモデル、研究ラボ、そしてそれらを牽引するトップ研究者の最新情報カタログサイトです。
+    </p>
+  </section>
+
+  <!-- Latest Models -->
+  <section class="mb-16">
+    <div class="flex justify-between items-end mb-6">
+      <h2 class="text-2xl md:text-3xl font-bold">最新モデル</h2>
+      <a href="/models" class="text-blue-500 hover:underline">すべて見る &rarr;</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {latestModels.map(model => (
+        <a href={`/models/${model.id}`} class="block p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
+          <h3 class="text-xl font-semibold mb-2">{model.data.title}</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{model.data.lab} &bull; {model.data.releaseDate.toISOString().split('T')[0]}</p>
+          <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-3">{model.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Key Labs -->
+  <section class="mb-16">
+    <div class="flex justify-between items-end mb-6">
+      <h2 class="text-2xl md:text-3xl font-bold">主要AIラボ</h2>
+      <a href="/labs" class="text-blue-500 hover:underline">すべて見る &rarr;</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {labs.slice(0, 3).map(lab => (
+        <a href={`/labs/${lab.id}`} class="flex flex-col p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
+          <h3 class="text-xl font-semibold mb-1">{lab.data.name}</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">{lab.data.location}</p>
+          <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">{lab.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Top Researchers -->
+  <section>
+    <div class="flex justify-between items-end mb-6">
+      <h2 class="text-2xl md:text-3xl font-bold">注目研究者</h2>
+      <a href="/researchers" class="text-blue-500 hover:underline">すべて見る &rarr;</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {researchers.slice(0, 3).map(researcher => (
+        <a href={`/researchers/${researcher.id}`} class="flex items-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
+          <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xl font-bold text-gray-500 dark:text-gray-400 mr-4">
+            {researcher.data.name.charAt(0)}
+          </div>
+          <div>
+            <h3 class="font-semibold">{researcher.data.name}</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{researcher.data.role} @ {researcher.data.lab}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
