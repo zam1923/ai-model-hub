@@ -6,18 +6,32 @@ const labs = await getCollection('labs');
 ---
 
 <Layout title="AIラボ一覧 | AI Info Catalog">
-  <div class="mb-8">
-    <h1 class="text-3xl md:text-4xl font-bold mb-4">主要AIラボ</h1>
-    <p class="text-gray-600 dark:text-gray-300">世界をリードするAI研究機関や企業の一覧です。</p>
+  <div class="bg-slate-900 text-white py-16 mb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl md:text-5xl font-black mb-4">Research Laboratories</h1>
+      <p class="text-slate-400 text-lg max-w-2xl">世界をリードするAI研究機関や企業の一覧。次世代の技術を生み出す拠点です。</p>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {labs.map(lab => (
-      <a href={`/labs/${lab.id}`} class="flex flex-col p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
-        <h2 class="text-2xl font-semibold mb-2">{lab.data.name}</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{lab.data.location}</p>
-        <p class="text-gray-700 dark:text-gray-300 line-clamp-3 mb-4">{lab.data.description}</p>
-      </a>
-    ))}
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {labs.map(lab => (
+        <a href={`/labs/${lab.id}`} class="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">
+          <div class="aspect-video w-full overflow-hidden bg-slate-100 relative">
+            <img src={lab.data.image || "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"} alt={lab.data.name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+
+          <div class="p-6 flex-1 flex flex-col">
+            <h2 class="text-2xl font-black text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{lab.data.name}</h2>
+            <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center">
+              <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              {lab.data.location}
+            </p>
+            <p class="text-slate-600 line-clamp-3 leading-relaxed">{lab.data.description}</p>
+          </div>
+        </a>
+      ))}
+    </div>
   </div>
 </Layout>

@@ -35,3 +35,42 @@
 02:39:21 [vite] program reload
 02:39:21 [vite] program reload
 02:41:31 [vite] program reload
+03:19:43 [watch] /src/styles/global.css
+03:19:43 [content] Syncing content
+03:19:43 [content] Content config changed
+03:19:43 [content] Clearing content store
+03:19:43 [content] Synced content
+03:19:51 [vite] program reload
+03:21:38 [vite] program reload
+03:21:38 [glob-loader] Reloaded data from gpt-4o.md
+03:21:40 [vite] program reload
+03:21:40 [glob-loader] Reloaded data from gemini-1-5-pro.md
+03:21:42 [vite] program reload
+03:21:42 [glob-loader] Reloaded data from claude-3-5-sonnet.md
+03:21:50 [vite] program reload
+03:21:50 [glob-loader] Reloaded data from openai.md
+03:21:52 [vite] program reload
+03:21:52 [glob-loader] Reloaded data from google-deepmind.md
+03:21:54 [vite] program reload
+03:21:54 [glob-loader] Reloaded data from anthropic.md
+03:23:01 [vite] program reload
+03:23:01 [glob-loader] Reloaded data from sam-altman.md
+03:23:02 [vite] program reload
+03:23:02 [glob-loader] Reloaded data from demis-hassabis.md
+03:23:04 [vite] program reload
+03:23:04 [glob-loader] Reloaded data from dario-amodei.md
+03:24:26 [watch] /src/styles/global.css
+03:25:46 [watch] /src/styles/global.css
+03:25:47 [watch] src/pages/models/index.astro
+03:25:59 [watch] /src/styles/global.css
+03:26:01 [watch] /src/styles/global.css
+03:26:29 [watch] /src/styles/global.css
+03:26:30 [watch] /src/styles/global.css
+03:26:49 [watch] /src/styles/global.css
+03:29:53 [200] / 71ms
+03:29:53 [200] / 4ms
+03:29:55 [200] /models 32ms
+03:29:55 [200] /models/claude-3-5-sonnet 27ms
+03:29:56 [200] /labs 40ms
+03:29:57 [200] /labs/openai 42ms
+03:29:58 [200] /researchers 37ms

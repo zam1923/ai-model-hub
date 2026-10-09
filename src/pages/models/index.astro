@@ -12,85 +12,96 @@ const uniqueModalities = [...new Set(allModalities)].sort();
 ---
 
 <Layout title="モデル一覧 | AI Info Catalog">
-  <div class="mb-8">
-    <h1 class="text-3xl md:text-4xl font-bold mb-4">AIモデル一覧</h1>
-    <p class="text-gray-600 dark:text-gray-300 mb-6">最新の大規模言語モデルやマルチモーダルモデルの情報を網羅しています。</p>
+  <div class="bg-slate-900 text-white py-16 mb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl md:text-5xl font-black mb-4">AI Models Repository</h1>
+      <p class="text-slate-400 text-lg max-w-2xl">最先端の大規模言語モデルやマルチモーダルモデルの情報を網羅。技術の進化を追跡します。</p>
+    </div>
+  </div>
 
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
     <!-- Search & Filter Controls -->
-    <div class="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-8 space-y-4">
-      <div>
-        <label for="searchInput" class="sr-only">モデルを検索</label>
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-10">
+      <div class="mb-6">
+        <label for="searchInput" class="sr-only">Search models</label>
         <div class="relative">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
             </svg>
           </div>
-          <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="モデル名やキーワードで検索...">
+          <input type="text" id="searchInput" class="block w-full pl-11 pr-4 py-3 border border-slate-300 rounded-xl leading-5 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-colors" placeholder="モデル名やキーワードで検索...">
         </div>
       </div>
 
-      <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex flex-col md:flex-row gap-8">
         <div class="flex-1">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ラボで絞り込み:</label>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Filter by Lab</label>
           <div class="flex flex-wrap gap-2" id="labFilters">
-            <button class="filter-btn active px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-full transition-colors" data-filter-type="lab" data-filter-value="all">すべて</button>
+            <button class="filter-btn active px-4 py-1.5 bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors shadow-sm" data-filter-type="lab" data-filter-value="all">All Labs</button>
             {labs.map(lab => (
-              <button class="filter-btn px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 text-xs font-medium rounded-full transition-colors" data-filter-type="lab" data-filter-value={lab}>{lab}</button>
+              <button class="filter-btn px-4 py-1.5 bg-slate-100 text-slate-600 hover:bg-slate-200 text-sm font-medium rounded-lg transition-colors" data-filter-type="lab" data-filter-value={lab}>{lab}</button>
             ))}
           </div>
         </div>
 
         <div class="flex-1">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">対応モダリティ:</label>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Filter by Modality</label>
           <div class="flex flex-wrap gap-2" id="modalityFilters">
-            <button class="filter-btn active px-3 py-1 bg-purple-600 text-white text-xs font-medium rounded-full transition-colors" data-filter-type="modality" data-filter-value="all">すべて</button>
+            <button class="filter-btn active px-4 py-1.5 bg-slate-900 text-white text-sm font-medium rounded-lg transition-colors shadow-sm" data-filter-type="modality" data-filter-value="all">All</button>
             {uniqueModalities.map(mod => (
-              <button class="filter-btn px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 text-xs font-medium rounded-full transition-colors" data-filter-type="modality" data-filter-value={mod}>{mod}</button>
+              <button class="filter-btn px-4 py-1.5 bg-slate-100 text-slate-600 hover:bg-slate-200 text-sm font-medium rounded-lg transition-colors" data-filter-type="modality" data-filter-value={mod}>{mod}</button>
             ))}
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Empty State (Hidden by default) -->
-  <div id="emptyState" class="hidden text-center py-12">
-    <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    <h3 class="text-lg font-medium text-gray-900 dark:text-white">見つかりませんでした</h3>
-    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">検索条件に一致するモデルがありません。条件を変えてお試しください。</p>
-  </div>
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-20 bg-white rounded-2xl border border-slate-200 border-dashed">
+      <svg class="mx-auto h-12 w-12 text-slate-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <h3 class="text-lg font-bold text-slate-900">モデルが見つかりません</h3>
+      <p class="mt-2 text-sm text-slate-500">検索条件を変更して再度お試しください。</p>
+    </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="modelsGrid">
-    {sortedModels.map(model => (
-      <a href={`/models/${model.id}`}
-         class="model-card block p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700"
-         data-title={model.data.title.toLowerCase()}
-         data-description={model.data.description.toLowerCase()}
-         data-lab={model.data.lab}
-         data-modalities={model.data.modalities ? model.data.modalities.join(',') : ''}
-      >
-        <h2 class="text-2xl font-semibold mb-3">{model.data.title}</h2>
-
-        <div class="flex flex-wrap gap-2 mb-4">
-          <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded">{model.data.lab}</span>
-          <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-medium rounded">{model.data.releaseDate.toISOString().split('T')[0]}</span>
-          <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-medium rounded">{model.data.license}</span>
-        </div>
-
-        <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-3 mb-4">{model.data.description}</p>
-
-        {model.data.modalities && (
-          <div class="flex flex-wrap gap-1">
-            {model.data.modalities.map(mod => (
-              <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-[10px] uppercase font-bold rounded-full">{mod}</span>
-            ))}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="modelsGrid">
+      {sortedModels.map(model => (
+        <a href={`/models/${model.id}`}
+           class="model-card group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100"
+           data-title={model.data.title.toLowerCase()}
+           data-description={model.data.description.toLowerCase()}
+           data-lab={model.data.lab}
+           data-modalities={model.data.modalities ? model.data.modalities.join(',') : ''}
+        >
+          <div class="aspect-video w-full overflow-hidden bg-slate-100 relative">
+            <img src={model.data.image || "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop"} alt={model.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute top-4 left-4 flex gap-2">
+              <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm text-slate-900 text-xs font-bold rounded-md shadow-sm">{model.data.lab}</span>
+            </div>
           </div>
-        )}
-      </a>
-    ))}
+
+          <div class="p-6 flex-1 flex flex-col">
+            <div class="flex items-center gap-3 mb-3 text-xs font-medium text-slate-500">
+              <span class="flex items-center"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>{model.data.releaseDate.toISOString().split('T')[0]}</span>
+              <span class="flex items-center"><svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>{model.data.license}</span>
+            </div>
+
+            <h2 class="text-2xl font-black text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">{model.data.title}</h2>
+            <p class="text-slate-600 text-sm line-clamp-3 mb-6 flex-1">{model.data.description}</p>
+
+            {model.data.modalities && (
+              <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-slate-100">
+                {model.data.modalities.map(mod => (
+                  <span class="px-2 py-1 bg-slate-100 text-slate-600 text-[11px] uppercase font-bold tracking-wider rounded-md">{mod}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
   </div>
 </Layout>
 
@@ -120,7 +131,7 @@ const uniqueModalities = [...new Set(allModalities)].sort();
         const matchesModality = currentModalityFilter === 'all' || modalities.includes(currentModalityFilter);
 
         if (matchesSearch && matchesLab && matchesModality) {
-          (card as HTMLElement).style.display = 'block';
+          (card as HTMLElement).style.display = 'flex';
           visibleCount++;
         } else {
           (card as HTMLElement).style.display = 'none';
@@ -148,22 +159,16 @@ const uniqueModalities = [...new Set(allModalities)].sort();
         // Update active classes within the same group
         const groupBtns = document.querySelectorAll(`.filter-btn[data-filter-type="${filterType}"]`);
         groupBtns.forEach(b => {
-          b.classList.remove('active', 'text-white');
-          b.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200');
-          if (filterType === 'lab') {
-             b.classList.remove('bg-blue-600');
-          } else {
-             b.classList.remove('bg-purple-600');
-          }
+          b.classList.remove('active', 'bg-slate-900', 'text-white', 'shadow-sm');
+          b.classList.add('bg-slate-100', 'text-slate-600', 'hover:bg-slate-200');
         });
 
-        target.classList.add('active', 'text-white');
-        target.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200');
+        target.classList.add('active', 'bg-slate-900', 'text-white', 'shadow-sm');
+        target.classList.remove('bg-slate-100', 'text-slate-600', 'hover:bg-slate-200');
+
         if (filterType === 'lab') {
-           target.classList.add('bg-blue-600');
            currentLabFilter = filterValue || 'all';
         } else {
-           target.classList.add('bg-purple-600');
            currentModalityFilter = filterValue || 'all';
         }
 

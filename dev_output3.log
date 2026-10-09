@@ -1,0 +1,15 @@
+
+> callous-cycle@0.0.1 dev
+> astro dev
+
+Another astro dev server is already running.
+
+  URL:  http://localhost:4321
+  PID:  64013
+
+Run `astro dev stop` to stop it, or use `astro dev --force` to replace it.
+  Location:
+    /app/node_modules/astro/dist/cli/dev/index.js:182:10
+  Stack trace:
+    at dev (file:///app/node_modules/astro/dist/cli/dev/index.js:182:10)
+    at async cli (file:///app/node_modules/astro/dist/cli/index.js:212:3)

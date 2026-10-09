@@ -3,6 +3,7 @@ name: "Sam Altman"
 lab: "OpenAI"
 role: "CEO"
 famousFor: "OpenAIのCEOとして、ChatGPTのリリースとAIブームを牽引。"
+image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop"
 links:
   x: "https://x.com/sama"
 ---

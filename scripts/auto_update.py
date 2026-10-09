@@ -47,13 +47,15 @@ def generate_markdown_content(entry):
         "license": "Unknown",
         "description": "Short Japanese description (1-2 sentences)",
         "paperUrl": "URL",
-        "modalities": ["Text"]
+        "modalities": ["Text"],
+        "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop"
       }},
       "lab": {{
         "id": "slug-format-lab-name",
         "name": "Lab Name",
         "location": "Global",
-        "description": "Short Japanese description of the lab"
+        "description": "Short Japanese description of the lab",
+        "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
       }},
       "researchers": [
         {{
@@ -62,6 +64,7 @@ def generate_markdown_content(entry):
           "lab": "Lab Name",
           "role": "Researcher",
           "famousFor": "Mention this paper in Japanese",
+          "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop",
           "links": {{ "scholar": "URL" }}
         }}
       ]

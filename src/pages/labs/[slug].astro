@@ -24,60 +24,94 @@ const labResearchers = allResearchers.filter(researcher => researcher.data.lab =
 ---
 
 <Layout title={`${lab.data.name} | AI Info Catalog`}>
-  <div class="max-w-4xl mx-auto">
-    <div class="mb-6">
-      <a href="/labs" class="text-blue-500 hover:underline">&larr; ラボ一覧に戻る</a>
+  <!-- Hero Section -->
+  <div class="relative bg-slate-900 text-white overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-40">
+      <img src={lab.data.image || "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2000&auto=format&fit=crop"} alt="Background" class="w-full h-full object-cover blur-sm" />
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-slate-900/40"></div>
     </div>
 
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12 mb-8">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">{lab.data.name}</h1>
-      <p class="text-gray-500 dark:text-gray-400 mb-8">{lab.data.location}</p>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-20 lg:pb-32">
+      <a href="/labs" class="inline-flex items-center text-sm font-bold tracking-wider uppercase text-blue-400 hover:text-blue-300 transition-colors mb-8">
+        &larr; Back to Labs
+      </a>
 
-      <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
-        <Content />
+      <div class="flex items-center gap-2 mb-6 text-slate-300 text-sm font-bold uppercase tracking-wider">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        {lab.data.location}
       </div>
+
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-6">{lab.data.name}</h1>
 
       {lab.data.website && (
-        <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
-          <a href={lab.data.website} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
-            公式サイトへ
-          </a>
-        </div>
+        <a href={lab.data.website} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 bg-white text-slate-900 hover:bg-slate-100 font-bold rounded-xl transition-colors mt-4">
+          Visit Official Site
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+        </a>
       )}
     </div>
+  </div>
 
-    {labModels.length > 0 && (
-      <div class="mb-12">
-        <h2 class="text-2xl font-bold mb-6">代表モデル</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {labModels.map(model => (
-            <a href={`/models/${model.id}`} class="block p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
-              <h3 class="text-xl font-semibold mb-2">{model.data.title}</h3>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">{model.data.releaseDate.toISOString().split('T')[0]}</p>
-              <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">{model.data.description}</p>
-            </a>
-          ))}
-        </div>
-      </div>
-    )}
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
 
-    {labResearchers.length > 0 && (
-      <div>
-        <h2 class="text-2xl font-bold mb-6">所属する主な研究者・メンバー</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {labResearchers.map(researcher => (
-            <a href={`/researchers/${researcher.id}`} class="flex items-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
-              <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-xl font-bold text-gray-500 dark:text-gray-400 mr-4 shrink-0">
-                {researcher.data.name.charAt(0)}
-              </div>
-              <div>
-                <h3 class="font-semibold">{researcher.data.name}</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400">{researcher.data.role}</p>
-              </div>
-            </a>
-          ))}
-        </div>
+      <!-- Main Info & Researchers -->
+      <div class="lg:col-span-2 space-y-16">
+        <section>
+          <h2 class="text-2xl font-black uppercase tracking-wider text-slate-900 mb-8 border-b border-slate-200 pb-4">About the Lab</h2>
+          <div class="prose prose-lg prose-slate max-w-none">
+            <Content />
+          </div>
+        </section>
+
+        {labResearchers.length > 0 && (
+          <section>
+            <h2 class="text-2xl font-black uppercase tracking-wider text-slate-900 mb-8 border-b border-slate-200 pb-4">Key Personnel</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {labResearchers.map(researcher => (
+                <a href={`/researchers/${researcher.id}`} class="group flex items-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                  <div class="w-16 h-16 rounded-full overflow-hidden mr-4 shrink-0 shadow-inner">
+                    {researcher.data.image ? (
+                      <img src={researcher.data.image} alt={researcher.data.name} class="w-full h-full object-cover" />
+                    ) : (
+                      <div class="w-full h-full bg-slate-200 flex items-center justify-center text-xl font-black text-slate-400">
+                        {researcher.data.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{researcher.data.name}</h3>
+                    <p class="text-sm text-slate-500">{researcher.data.role}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
-    )}
+
+      <!-- Models Sidebar -->
+      <div class="lg:col-span-1">
+        {labModels.length > 0 && (
+          <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 sticky top-24">
+            <h2 class="text-lg font-black uppercase tracking-wider text-slate-900 mb-6 border-b border-slate-200 pb-4">Developed Models</h2>
+            <div class="flex flex-col gap-6">
+              {labModels.map(model => (
+                <a href={`/models/${model.id}`} class="group flex flex-col bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-100">
+                  <h3 class="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-1">{model.data.title}</h3>
+                  <div class="flex items-center gap-2 mb-2 text-xs font-medium text-slate-500">
+                    <span>{model.data.releaseDate.toISOString().split('T')[0]}</span>
+                    <span>&bull;</span>
+                    <span class="uppercase">{model.data.license}</span>
+                  </div>
+                  <p class="text-sm text-slate-600 line-clamp-2">{model.data.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+    </div>
   </div>
 </Layout>
