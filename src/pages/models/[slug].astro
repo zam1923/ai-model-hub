@@ -47,9 +47,24 @@ const { Content } = await render(model);
             <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">By AI Info Editorial Desk</p>
             <p class="text-sm text-slate-400">Published: {model.data.releaseDate.toISOString().split('T')[0]}</p>
           </div>
-          <article class="prose prose-lg prose-slate prose-img:rounded-xl prose-headings:font-black prose-a:text-blue-600 hover:prose-a:text-blue-500 max-w-none first-letter:text-7xl first-letter:font-black first-letter:text-slate-900 first-letter:mr-3 first-letter:float-left">
+          <article class="prose prose-lg prose-slate prose-img:rounded-xl prose-headings:font-black prose-a:text-blue-600 hover:prose-a:text-blue-500 max-w-none first-letter:text-7xl first-letter:font-black first-letter:text-slate-900 first-letter:mr-3 first-letter:float-left mb-12">
             <Content />
           </article>
+
+          {model.data.sourceUrl && (
+            <div class="mt-12 p-8 bg-slate-50 border border-slate-200 rounded-2xl">
+              <h3 class="text-sm font-black uppercase tracking-widest text-slate-500 mb-4">Original Source / 引用元</h3>
+              <a href={model.data.sourceUrl} target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all">
+                <div class="flex-1 pr-4">
+                  <p class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">{model.data.sourceTitle || "公式リリース・論文を読む"}</p>
+                  <p class="text-xs text-slate-400 mt-1 truncate">{model.data.sourceUrl}</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+              </a>
+            </div>
+          )}
         </div>
       </div>
 

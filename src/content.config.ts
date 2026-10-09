@@ -14,6 +14,8 @@ const modelsCollection = defineCollection({
     paperUrl: z.string().url().optional(),
     modalities: z.array(z.string()).optional(),
     image: z.string().url().optional(),
+    sourceUrl: z.string().url().optional(),
+    sourceTitle: z.string().optional(),
   })
 });
 
@@ -25,6 +27,8 @@ const labsCollection = defineCollection({
     description: z.string(),
     website: z.string().url().optional(),
     image: z.string().url().optional(),
+    sourceUrl: z.string().url().optional(),
+    sourceTitle: z.string().optional(),
   })
 });
 
@@ -36,6 +40,8 @@ const researchersCollection = defineCollection({
     role: z.string(),
     famousFor: z.string(),
     image: z.string().url().optional(),
+    sourceUrl: z.string().url().optional(),
+    sourceTitle: z.string().optional(),
     links: z.object({
       x: z.string().url().optional(),
       github: z.string().url().optional(),
