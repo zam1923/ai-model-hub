@@ -63,9 +63,13 @@ const lab = allLabs.find(l => l.data.name === researcher.data.lab);
         <p class="text-lg text-slate-800 font-medium leading-relaxed">{researcher.data.famousFor}</p>
       </div>
 
-      <div class="prose prose-lg prose-slate max-w-none mb-12">
-        <Content />
+      <div class="mb-8 pb-4 border-b border-slate-100">
+        <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">By AI Info Editorial Desk</p>
       </div>
+
+      <article class="prose prose-lg prose-slate prose-headings:font-black prose-a:text-blue-600 hover:prose-a:text-blue-500 max-w-none mb-12 first-letter:text-6xl first-letter:font-black first-letter:text-slate-900 first-letter:mr-3 first-letter:float-left">
+        <Content />
+      </article>
 
       {researcher.data.links && Object.keys(researcher.data.links).length > 0 && (
         <div class="pt-10 border-t border-slate-200">
