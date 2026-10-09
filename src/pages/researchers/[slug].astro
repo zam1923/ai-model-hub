@@ -71,6 +71,21 @@ const lab = allLabs.find(l => l.data.name === researcher.data.lab);
         <Content />
       </article>
 
+      {researcher.data.sourceUrl && (
+        <div class="mb-12 p-8 bg-slate-50 border border-slate-200 rounded-2xl">
+          <h3 class="text-sm font-black uppercase tracking-widest text-slate-500 mb-4">Original Source / 引用元</h3>
+          <a href={researcher.data.sourceUrl} target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all">
+            <div class="flex-1 pr-4">
+              <p class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">{researcher.data.sourceTitle || "関連ニュース・論文を読む"}</p>
+              <p class="text-xs text-slate-400 mt-1 truncate">{researcher.data.sourceUrl}</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </div>
+          </a>
+        </div>
+      )}
+
       {researcher.data.links && Object.keys(researcher.data.links).length > 0 && (
         <div class="pt-10 border-t border-slate-200">
           <h3 class="text-lg font-black uppercase tracking-wider text-slate-900 mb-6">Connect & Discover</h3>
