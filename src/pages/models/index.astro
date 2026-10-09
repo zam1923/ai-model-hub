@@ -4,17 +4,74 @@ import { getCollection } from 'astro:content';
 
 const models = await getCollection('models');
 const sortedModels = models.sort((a, b) => b.data.releaseDate.valueOf() - a.data.releaseDate.valueOf());
+
+// Extract unique labs and modalities for filtering
+const labs = [...new Set(models.map(model => model.data.lab))].sort();
+const allModalities = models.flatMap(model => model.data.modalities || []);
+const uniqueModalities = [...new Set(allModalities)].sort();
 ---
 
 <Layout title="モデル一覧 | AI Info Catalog">
   <div class="mb-8">
     <h1 class="text-3xl md:text-4xl font-bold mb-4">AIモデル一覧</h1>
-    <p class="text-gray-600 dark:text-gray-300">最新の大規模言語モデルやマルチモーダルモデルの情報を網羅しています。</p>
+    <p class="text-gray-600 dark:text-gray-300 mb-6">最新の大規模言語モデルやマルチモーダルモデルの情報を網羅しています。</p>
+
+    <!-- Search & Filter Controls -->
+    <div class="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-8 space-y-4">
+      <div>
+        <label for="searchInput" class="sr-only">モデルを検索</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="モデル名やキーワードで検索...">
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">ラボで絞り込み:</label>
+          <div class="flex flex-wrap gap-2" id="labFilters">
+            <button class="filter-btn active px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-full transition-colors" data-filter-type="lab" data-filter-value="all">すべて</button>
+            {labs.map(lab => (
+              <button class="filter-btn px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 text-xs font-medium rounded-full transition-colors" data-filter-type="lab" data-filter-value={lab}>{lab}</button>
+            ))}
+          </div>
+        </div>
+
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">対応モダリティ:</label>
+          <div class="flex flex-wrap gap-2" id="modalityFilters">
+            <button class="filter-btn active px-3 py-1 bg-purple-600 text-white text-xs font-medium rounded-full transition-colors" data-filter-type="modality" data-filter-value="all">すべて</button>
+            {uniqueModalities.map(mod => (
+              <button class="filter-btn px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 text-xs font-medium rounded-full transition-colors" data-filter-type="modality" data-filter-value={mod}>{mod}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- Empty State (Hidden by default) -->
+  <div id="emptyState" class="hidden text-center py-12">
+    <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <h3 class="text-lg font-medium text-gray-900 dark:text-white">見つかりませんでした</h3>
+    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">検索条件に一致するモデルがありません。条件を変えてお試しください。</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="modelsGrid">
     {sortedModels.map(model => (
-      <a href={`/models/${model.id}`} class="block p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700">
+      <a href={`/models/${model.id}`}
+         class="model-card block p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700"
+         data-title={model.data.title.toLowerCase()}
+         data-description={model.data.description.toLowerCase()}
+         data-lab={model.data.lab}
+         data-modalities={model.data.modalities ? model.data.modalities.join(',') : ''}
+      >
         <h2 class="text-2xl font-semibold mb-3">{model.data.title}</h2>
 
         <div class="flex flex-wrap gap-2 mb-4">
@@ -36,3 +93,82 @@ const sortedModels = models.sort((a, b) => b.data.releaseDate.valueOf() - a.data
     ))}
   </div>
 </Layout>
+
+<script>
+  // Client-side filtering logic
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+    const modelCards = document.querySelectorAll('.model-card');
+    const emptyState = document.getElementById('emptyState');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    let currentLabFilter = 'all';
+    let currentModalityFilter = 'all';
+    let currentSearchTerm = '';
+
+    function filterModels() {
+      let visibleCount = 0;
+
+      modelCards.forEach(card => {
+        const title = card.getAttribute('data-title') || '';
+        const desc = card.getAttribute('data-description') || '';
+        const lab = card.getAttribute('data-lab') || '';
+        const modalities = (card.getAttribute('data-modalities') || '').split(',');
+
+        const matchesSearch = title.includes(currentSearchTerm) || desc.includes(currentSearchTerm);
+        const matchesLab = currentLabFilter === 'all' || lab === currentLabFilter;
+        const matchesModality = currentModalityFilter === 'all' || modalities.includes(currentModalityFilter);
+
+        if (matchesSearch && matchesLab && matchesModality) {
+          (card as HTMLElement).style.display = 'block';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentSearchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+        filterModels();
+      });
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const filterType = target.getAttribute('data-filter-type');
+        const filterValue = target.getAttribute('data-filter-value');
+
+        // Update active classes within the same group
+        const groupBtns = document.querySelectorAll(`.filter-btn[data-filter-type="${filterType}"]`);
+        groupBtns.forEach(b => {
+          b.classList.remove('active', 'text-white');
+          b.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200');
+          if (filterType === 'lab') {
+             b.classList.remove('bg-blue-600');
+          } else {
+             b.classList.remove('bg-purple-600');
+          }
+        });
+
+        target.classList.add('active', 'text-white');
+        target.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200');
+        if (filterType === 'lab') {
+           target.classList.add('bg-blue-600');
+           currentLabFilter = filterValue || 'all';
+        } else {
+           target.classList.add('bg-purple-600');
+           currentModalityFilter = filterValue || 'all';
+        }
+
+        filterModels();
+      });
+    });
+  });
+</script>
