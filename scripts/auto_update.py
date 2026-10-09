@@ -9,7 +9,7 @@ from datetime import datetime
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
 # We'll use a cheaper/faster model for basic extraction
-model = genai.GenerativeModel('gemini-2.5-flash')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 def fetch_arxiv_cs_ai():
     """Fetch recent papers from arXiv cs.AI."""
