@@ -35,6 +35,8 @@ def generate_markdown_content(entry):
     1. If a distinct AI Model is NOT introduced or discussed as the main topic, return an empty JSON object: {{}}.
     2. If a model IS introduced, generate structured data for the model, its lab, and its top 2 authors.
     3. Translate descriptions into professional Japanese.
+    4. For the `body` field of the model, write a 500-800 character article in a high-quality, engaging journalistic style (like TechCrunch or Wired), detailing the model's impact, architecture, and significance based on the abstract.
+    5. Choose an `image_category` for the model from: "abstract", "datacenter", "robotics", "office", "code".
 
     Output strictly as a JSON object with this structure (no markdown blocks, just raw JSON):
     {{
@@ -45,17 +47,19 @@ def generate_markdown_content(entry):
         "releaseDate": "YYYY-MM-DD",
         "contextWindow": "Unknown",
         "license": "Unknown",
-        "description": "Short Japanese description (1-2 sentences)",
-        "paperUrl": "URL",
+        "description": "Short Japanese summary (1-2 sentences)",
+        "paperUrl": "https://example.com",
         "modalities": ["Text"],
-        "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop"
+        "image_category": "abstract",
+        "body": "Journalistic Japanese article (500-800 chars)..."
       }},
       "lab": {{
         "id": "slug-format-lab-name",
         "name": "Lab Name",
         "location": "Global",
         "description": "Short Japanese description of the lab",
-        "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
+        "body": "Journalistic background of the lab...",
+        "image_category": "office"
       }},
       "researchers": [
         {{
@@ -64,8 +68,9 @@ def generate_markdown_content(entry):
           "lab": "Lab Name",
           "role": "Researcher",
           "famousFor": "Mention this paper in Japanese",
-          "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop",
-          "links": {{ "scholar": "URL" }}
+          "body": "Journalistic bio of the researcher...",
+          "image_category": "office",
+          "links": {{ "scholar": "https://example.com" }}
         }}
       ]
     }}
@@ -83,7 +88,19 @@ def generate_markdown_content(entry):
         print(f"Error generating content via Gemini: {e}")
         return {}
 
+IMAGE_MAP = {
+    "abstract": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop",
+    "datacenter": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop",
+    "robotics": "https://images.unsplash.com/photo-1680868543815-b8666dba60f7?q=80&w=800&auto=format&fit=crop",
+    "office": "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop",
+    "code": "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop"
+}
+
 def save_markdown(directory, id, frontmatter, body=""):
+    # Map image category to URL
+    if "image_category" in frontmatter:
+        cat = frontmatter.pop("image_category")
+        frontmatter["image"] = IMAGE_MAP.get(cat, IMAGE_MAP["abstract"])
     """Save data as a markdown file."""
     filepath = f"src/content/{directory}/{id}.md"
 
@@ -135,18 +152,21 @@ def main():
         researchers_data = data.get('researchers', [])
 
         # Save Model
-        model_id = model_data.pop('id')
-        save_markdown('models', model_id, model_data, f"{model_data['title']}の詳細情報です。")
+        model_id = model_data.pop('id', 'unknown-model')
+        model_body = model_data.pop('body', f"{model_data.get('title', 'Unknown')}の詳細情報です。")
+        save_markdown('models', model_id, model_data, model_body)
 
         # Save Lab
         if lab_data:
-            lab_id = lab_data.pop('id')
-            save_markdown('labs', lab_id, lab_data, f"{lab_data['name']}の概要です。")
+            lab_id = lab_data.pop('id', 'unknown-lab')
+            lab_body = lab_data.pop('body', f"{lab_data.get('name', 'Unknown')}の概要です。")
+            save_markdown('labs', lab_id, lab_data, lab_body)
 
         # Save Researchers
         for res_data in researchers_data:
-            res_id = res_data.pop('id')
-            save_markdown('researchers', res_id, res_data, f"{res_data['name']}のプロフィールです。")
+            res_id = res_data.pop('id', 'unknown-researcher')
+            res_body = res_data.pop('body', f"{res_data.get('name', 'Unknown')}のプロフィールです。")
+            save_markdown('researchers', res_id, res_data, res_body)
 
 if __name__ == "__main__":
     main()

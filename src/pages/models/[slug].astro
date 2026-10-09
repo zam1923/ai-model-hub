@@ -42,10 +42,14 @@ const { Content } = await render(model);
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
       <!-- Main Content -->
       <div class="lg:col-span-2">
-        <div class="bg-white rounded-2xl p-8 md:p-12 shadow-xl border border-slate-100">
-          <div class="prose prose-lg prose-slate max-w-none">
-            <Content />
+        <div class="bg-white rounded-2xl p-8 md:p-14 shadow-xl border border-slate-100">
+          <div class="mb-10 pb-6 border-b border-slate-200">
+            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">By AI Info Editorial Desk</p>
+            <p class="text-sm text-slate-400">Published: {model.data.releaseDate.toISOString().split('T')[0]}</p>
           </div>
+          <article class="prose prose-lg prose-slate prose-img:rounded-xl prose-headings:font-black prose-a:text-blue-600 hover:prose-a:text-blue-500 max-w-none first-letter:text-7xl first-letter:font-black first-letter:text-slate-900 first-letter:mr-3 first-letter:float-left">
+            <Content />
+          </article>
         </div>
       </div>
 

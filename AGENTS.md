@@ -68,3 +68,4 @@ When you are assigned a task to improve this repository, follow these rules:
 1. Always test `npm run build` locally after making structural changes.
 2. If modifying schemas, ensure `scripts/auto_update.py` and `src/content.config.ts` are updated in sync.
 3. Respect the existing Tailwind styling and do not introduce conflicting CSS methodologies.
+4. **CRITICAL:** Do NOT create Pull Requests for your changes. Always commit and push directly to the `main` branch. Vercel is configured to automatically deploy from the `main` branch.

@@ -57,11 +57,14 @@ const labResearchers = allResearchers.filter(researcher => researcher.data.lab =
 
       <!-- Main Info & Researchers -->
       <div class="lg:col-span-2 space-y-16">
-        <section>
+        <section class="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-slate-100">
           <h2 class="text-2xl font-black uppercase tracking-wider text-slate-900 mb-8 border-b border-slate-200 pb-4">About the Lab</h2>
-          <div class="prose prose-lg prose-slate max-w-none">
-            <Content />
+          <div class="mb-8 pb-4 border-b border-slate-100">
+            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">By AI Info Editorial Desk</p>
           </div>
+          <article class="prose prose-lg prose-slate prose-headings:font-black prose-a:text-blue-600 hover:prose-a:text-blue-500 max-w-none first-letter:text-6xl first-letter:font-black first-letter:text-slate-900 first-letter:mr-3 first-letter:float-left">
+            <Content />
+          </article>
         </section>
 
         {labResearchers.length > 0 && (
